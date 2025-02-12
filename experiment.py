@@ -86,6 +86,14 @@ def run_bandit_experiment(
         gradient_update = det_pg_entropy
         L_tau = 5 / 2 + algo_kwargs["tau"] * 5 * (1 + jnp.log(env.K))
         algo_kwargs["eta"] = 1 / L_tau
+    elif "det_pg_decaying_entropy" == algo_name:
+        gradient_update = det_pg_entropy
+        algo_kwargs["tau"] = 0
+        algo_kwargs["eta"] = 0
+        def decaying_entropy_update(algo_kwargs, t, delta):
+            algo_kwargs["tau"] = algo_kwargs["alpha"] * delta / jnp.log(t + 1)
+            algo_kwargs["eta"] = 1 / algo_kwargs["tau"]
+            return algo_kwargs
     elif "det_pg_entropy_multistage" == algo_name:
         gradient_update = det_pg_entropy_multistage
         stage_start = 1
@@ -248,6 +256,9 @@ def run_bandit_experiment(
             if t - stage_start >= algo_kwargs["stage_length"]:
                 stage_start = t
                 algo_kwargs = multistage_stage_update(algo_kwargs)
+        elif "det_pg_decaying_entropy" == algo_name:
+            delta = env.mean_r[-1] - env.mean_r[-2]
+            algo_kwargs = decaying_entropy_update(algo_kwargs, t, delta)
         elif "spg_ess" in algo_name or "spg_entropy_ess" in algo_name:
             algo_kwargs = ess_step_size_update(algo_kwargs)
         elif "spg_multistage_ess" == algo_name:
@@ -261,23 +272,23 @@ def run_bandit_experiment(
                 stage_start = t
                 algo_kwargs = multistage_stage_update(algo_kwargs)
 
-        if terminate_condition(theta):
-            print()
-            print(
-                f"Gradient norm is small (< 1e-8) at iteration {t}, terminating, early"
-            )
-            log.append(
-                log_data(
-                    theta,
-                    pistar,
-                    env,
-                    algo_name,
-                    optimal_action,
-                    t=t,
-                    run_number=run_number,
-                )
-            )
-            return log, total_time
+        # if terminate_condition(theta):
+        #     print()
+        #     print(
+        #         f"Gradient norm is small (< 1e-8) at iteration {t}, terminating, early"
+        #     )
+        #     log.append(
+        #         log_data(
+        #             theta,
+        #             pistar,
+        #             env,
+        #             algo_name,
+        #             optimal_action,
+        #             t=t,
+        #             run_number=run_number,
+        #         )
+        #     )
+        #     return log, total_time
 
         if t % time_to_log == 0:
             log.append(

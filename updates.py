@@ -89,7 +89,7 @@ def det_gnpg(key, theta, reward, eta=None):
 
 
 @jax.jit
-def det_pg_entropy(key, theta, reward, eta, tau):
+def det_pg_entropy(key, theta, reward, eta, tau, alpha=None):
 
     @jax.grad
     def df(theta):

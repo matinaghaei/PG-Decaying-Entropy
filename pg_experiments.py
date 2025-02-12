@@ -47,24 +47,30 @@ environment_definitions = [
 L = 5 / 2
 
 algos = [
+    # {
+    #     "algo_name": "det_pg",
+    #     "algo_kwargs": {"eta": 1 / L},
+    # },
+    # {
+    #     "algo_name": "det_pg_entropy",
+    #     "algo_kwargs": {
+    #         "tau": 0.1
+    #     },  # step-size depends on `L^tau` which requires knowledge of number of arms and is computed later
+    # },
     {
-        "algo_name": "det_pg",
-        "algo_kwargs": {"eta": 1 / L},
-    },
-    {
-        "algo_name": "det_pg_entropy",
+        "algo_name": "det_pg_decaying_entropy",
         "algo_kwargs": {
-            "tau": 0.1
-        },  # step-size depends on `L^tau` which requires knowledge of number of arms and is computed later
+            "alpha": 1.0
+        },  # step-size and tau are computed later
     },
-    {
-        "algo_name": "det_pg_entropy_multistage",
-        "algo_kwargs": {
-            "tau": 0.1,
-            "p": 1,
-            "B_1": 0.01,
-        },  # step-size depends on `L^tau` which requires knowledge of number of arms and is computed in the update
-    },
+    # {
+    #     "algo_name": "det_pg_entropy_multistage",
+    #     "algo_kwargs": {
+    #         "tau": 0.1,
+    #         "p": 1,
+    #         "B_1": 0.01,
+    #     },  # step-size depends on `L^tau` which requires knowledge of number of arms and is computed in the update
+    # },
 ]
 
 run_experiment(
