@@ -11,7 +11,7 @@ from bandit_environments import Bandit
 from experiment import run_experiment
 
 T = 1_000_000
-TIME_TO_LOG = T // 10
+TIME_TO_LOG = 10
 NUM_ARMS = 10
 LOG_DIR = f"logs"
 EXP_NAME = f"bad_init"
