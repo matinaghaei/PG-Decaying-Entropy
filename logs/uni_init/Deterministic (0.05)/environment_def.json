@@ -1,0 +1,1 @@
+{"Bandit": "Bandit", "bandit_kwargs": {"K": 10}, "min_reward_gap": 0.05, "max_reward_gap": 0.5, "environment_name": "Deterministic (0.05)"}
