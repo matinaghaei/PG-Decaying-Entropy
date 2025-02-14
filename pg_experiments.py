@@ -66,7 +66,7 @@ algos = [
     {
         "algo_name": "det_pg_entropy_multistage",
         "algo_kwargs": {
-            "tau": 0.1,
+            "tau": 1.0,
             "p": 1,
             "B_1": 0.01,
         },  # step-size depends on `L^tau` which requires knowledge of number of arms and is computed in the update
