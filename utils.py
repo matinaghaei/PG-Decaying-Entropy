@@ -9,9 +9,9 @@ def save_experiment(path, experiment_name, logs, env_def, algo_name, inital_poli
         os.makedirs(dir)
 
     df = pd.DataFrame(logs)
-    df.to_csv(f"{dir}/{algo_name}_{inital_policy}_bandit.csv")
+    df.to_csv(f"{dir}/{algo_name}_bandit.csv")
 
-    np.save(f"{dir}/{algo_name}_{inital_policy}_time.txt", np.array(total_times))
+    np.save(f"{dir}/{algo_name}_time.txt", np.array(total_times))
     print(f"average  time: {np.array(total_times).mean()}")
 
     # make local to not modify the original
